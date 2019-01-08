@@ -9,11 +9,16 @@ public class CustomAnnotationApp {
 
     public static void main(String[] args) throws ClassNotFoundException {
         CustomAnnotationApp a = new CustomAnnotationApp();
-        a.executeAbc();
+        a.execute();
     }
 
     @MyApp("Ankur")
     public void executeAbc() throws ClassNotFoundException {
+        System.out.println(">>>"+c.sample());
+    }
+
+
+    public void execute() throws ClassNotFoundException {
         System.out.println(">>>"+c.sample());
     }
 

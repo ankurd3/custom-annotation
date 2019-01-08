@@ -59,13 +59,13 @@ public class AnnotationExecutors {
                    (e.getMethodName().indexOf("executeAbc") != -1 ||
                             e.getMethodName().indexOf("executeXyz") != -1))
                 .findAny()
-                .orElseGet(null);
+                .orElse(null);
 
         if(st != null){
             Method method = Arrays.stream(Class.forName(st.getClassName()).getMethods())
                     .filter(m->m.getName().equals(st.getMethodName()))
                     .findAny()
-                    .orElseGet(null);
+                    .orElse(null);
 
             if(method != null){
                 value = method.getAnnotation(MyApp.class).value();

@@ -7,7 +7,7 @@ public class CustomService {
 
     AnnotationExecutors ae = new AnnotationExecutors();
 
-    public String sample(){
+    public String sample() throws ClassNotFoundException {
         return ae.abc();
     }
 

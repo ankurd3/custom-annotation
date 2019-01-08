@@ -4,11 +4,14 @@ import com.test.myAnnotation.MyApp;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 public class AnnotationExecutors {
 
-    public String abc(){
-    return fetch();
+    public String abc() throws ClassNotFoundException {
+    return fetchUsingStream();
     }
 
     public String xyz(){
@@ -32,7 +35,7 @@ public class AnnotationExecutors {
                         if(method.getName().equals(e.getMethodName())){
                             System.out.println("----rocking-----");
                             MyApp an = method.getAnnotation(MyApp.class);
-                            return an.value();
+                            value = an.value();
                         }
                     }
                 } catch (ClassNotFoundException e1) {
@@ -40,6 +43,32 @@ public class AnnotationExecutors {
                 }
 
                 System.out.println("--------yay-------");
+            }
+        }
+
+        return value;
+    }
+
+    private String fetchUsingStream() throws  ClassNotFoundException{
+        String value = null;
+        StackTraceElement[] traces = new Throwable().getStackTrace();
+
+        Stream<StackTraceElement> elements = Arrays.stream(traces);
+
+        StackTraceElement st = elements.filter(e -> e.getClassName().indexOf("CustomAnnotationApp") != -1 &&
+                   (e.getMethodName().indexOf("executeAbc") != -1 ||
+                            e.getMethodName().indexOf("executeXyz") != -1))
+                .findAny()
+                .orElseGet(null);
+
+        if(st != null){
+            Method method = Arrays.stream(Class.forName(st.getClassName()).getMethods())
+                    .filter(m->m.getName().equals(st.getMethodName()))
+                    .findAny()
+                    .orElseGet(null);
+
+            if(method != null){
+                value = method.getAnnotation(MyApp.class).value();
             }
         }
 

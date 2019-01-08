@@ -9,7 +9,7 @@ public class CustomAnnotationApp {
 
     public static void main(String[] args) throws ClassNotFoundException {
         CustomAnnotationApp a = new CustomAnnotationApp();
-        a.execute();
+        a.executeAbc();
     }
 
     @MyApp("Ankur")

@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 public class AnnotationExecutors {
 
     public String abc() throws ClassNotFoundException {
-    return fetchUsingStream();
+    return fetchUpdatedStream();
     }
 
     public String xyz(){
@@ -73,6 +73,28 @@ public class AnnotationExecutors {
         }
 
         return value;
+    }
+
+    private String fetchUpdatedStream() throws  ClassNotFoundException{
+        String value = null;
+        StackTraceElement[] traces = new Throwable().getStackTrace();
+
+        StackTraceElement st = Arrays.stream(traces)
+                .filter(e -> e.getClassName().indexOf("CustomAnnotationApp") != -1 &&
+                                    (e.getMethodName().indexOf("executeAbc") != -1 ||
+                                    e.getMethodName().indexOf("executeXyz") != -1))
+                .findAny()
+                .orElse(null);
+
+        if(st != null)
+            value = Arrays.stream(Class.forName(st.getClassName()).getMethods())
+                    .filter(m->m.getName().equals(st.getMethodName()))
+                    .findAny()
+                    .orElse(null)
+                    .getAnnotation(MyApp.class).value();
+
+         return value;
+
     }
 
 
